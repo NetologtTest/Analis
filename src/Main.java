@@ -34,7 +34,7 @@ public class Main {
                         boolean bFound = false;
                         for (int k = i; k < j; k++) {
                             try {
-                                if (PotokA.take().charAt(k) == 'b') {
+                                if (PotokA.take().charAt(k) == 'a') {
                                     bFound = true;
                                     break;
                                 }
@@ -84,7 +84,7 @@ public class Main {
                         boolean bFound = false;
                         for (int k = i; k < j; k++) {
                             try {
-                                if (PotokC.take().charAt(k) == 'b') {
+                                if (PotokC.take().charAt(k) == 'c') {
                                     bFound = true;
                                     break;
                                 }
