@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
@@ -26,77 +27,18 @@ public class Main {
 
             new Thread(() -> {
 
-                for (int i = 0; i < PotokA.size(); i++) {
-                    for (int j = 0; j < PotokA.size(); j++) {
-                        if (i >= j) {
-                            continue;
-                        }
-                        boolean bFound = false;
-                        for (int k = i; k < j; k++) {
-                            try {
-                                if (PotokA.take().charAt(k) == 'a') {
-                                    bFound = true;
-                                    break;
-                                }
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                        if (!bFound && maxSizeA < j - i) {
-                            maxSizeA = j - i;
-                        }
-                    }
-                }
+                maxSizeA = analis('a', PotokA);
 
             }).start();
 
             new Thread(() -> {
-                for (int i = 0; i < PotokB.size(); i++) {
-                    for (int j = 0; j < PotokB.size(); j++) {
-                        if (i >= j) {
-                            continue;
-                        }
-                        boolean bFound = false;
-                        for (int k = i; k < j; k++) {
-                            try {
-                                if (PotokB.take().charAt(k) == 'b') {
-                                    bFound = true;
-                                    break;
-                                }
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                        if (!bFound && maxSizeB < j - i) {
-                            maxSizeB = j - i;
-                        }
-                    }
-                }
+                maxSizeB = analis('b', PotokB);
+
 
             }).start();
 
             new Thread(() -> {
-                for (int i = 0; i < PotokC.size(); i++) {
-                    for (int j = 0; j < PotokC.size(); j++) {
-                        if (i >= j) {
-                            continue;
-                        }
-                        boolean bFound = false;
-                        for (int k = i; k < j; k++) {
-                            try {
-                                if (PotokC.take().charAt(k) == 'c') {
-                                    bFound = true;
-                                    break;
-                                }
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                        if (!bFound && maxSizeC < j - i) {
-                            maxSizeC = j - i;
-                        }
-                    }
-                }
+                maxSizeC = analis('c', PotokC);
 
             }).start();
         }
@@ -104,6 +46,36 @@ public class Main {
         System.out.println(maxSizeA);
         System.out.println(maxSizeB);
         System.out.println(maxSizeC);
+    }
+
+    public static int analis(char ch, BlockingQueue<String> Potok) {
+        int maxSize = 0;
+
+
+        for (int i = 0; i < Potok.size(); i++) {
+            for (int j = 0; j < Potok.size(); j++) {
+                if (i >= j) {
+                    continue;
+                }
+                boolean bFound = false;
+                for (int k = i; k < j; k++) {
+                    try {
+                        if (PotokC.take().charAt(k) == ch) {
+                            bFound = true;
+                            break;
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if (!bFound && maxSize < j - i) {
+                    maxSize = j - i;
+                }
+            }
+        }
+
+
+        return maxSize;
     }
 
     public static String generateText(String letters, int length) {
